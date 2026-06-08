@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeyForge PM</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/style.css?v=10">
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i data-lucide="hexagon"></i> KeyForge PM
+            </div>
+        </div>
+        <nav class="nav-links">
+            <a class="nav-item active" data-target="dashboard"><span>🏠</span> Dashboard</a>
+            <a class="nav-item" data-target="gantt"><span>📅</span> Gantt Şeması</a>
+            <a class="nav-item" data-target="kanban"><span>📋</span> Kanban Board</a>
+            <a class="nav-item" data-target="tasks"><span>✅</span> Görev Listesi</a>
+            <a class="nav-item" data-target="team"><span>👥</span> Ekip Yönetimi</a>
+            <a class="nav-item" data-target="budget"><span>💰</span> Bütçe Takibi</a>
+            <a class="nav-item" data-target="risks"><span>⚠️</span> Risk Kaydı</a>
+            <a class="nav-item" data-target="milestones"><span>🏆</span> Milestones</a>
+            <a class="nav-item" data-target="showcase"><span>⌨️</span> Ürün Vitrini</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Topbar -->
+        <header class="topbar">
+            <div>
+                <h2 id="topbar-project-name" style="font-size: 1.125rem; font-weight: 500;">KeyForge MK-1</h2>
+                <p style="font-size: 0.75rem;">Son Güncelleme: Şimdi</p>
+            </div>
+            <div class="user-profile">
+                <button class="btn" onclick="resetData()" title="Verileri Sıfırla">
+                    <i data-lucide="rotate-ccw" style="width: 16px;"></i> Sıfırla
+                </button>
+                <div style="text-align: right; margin-right: 0.5rem;">
+                    <div style="font-weight: 500; font-size: 0.875rem;">Sevenç Önal</div>
+                    <div style="color: var(--text-muted); font-size: 0.75rem;">CEO / Proje Yöneticisi</div>
+                </div>
+                <img src="https://ui-avatars.com/api/?name=Sevenc+O&background=6366f1&color=fff" alt="User" class="avatar">
+            </div>
+        </header>
+
+        <!-- Pages Content Area -->
+        <div class="content-area">
+            
+            <!-- Dashboard -->
+            <div id="page-dashboard" class="page active">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Proje Özeti</h1>
+                        <p>KeyForge MK-1 Mekanik Klavye Lansmanı için genel durum.</p>
+                    </div>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="glass-panel kpi-card">
+                        <div class="kpi-header">
+                            <span>Toplam İlerleme</span>
+                            <i data-lucide="activity" class="kpi-icon"></i>
+                        </div>
+                        <div class="kpi-value" id="kpi-progress">45%</div>
+                        <div class="progress-bg">
+                            <div class="progress-fill" id="kpi-progress-bar" style="width: 45%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-panel kpi-card">
+                        <div class="kpi-header">
+                            <span>Kalan Bütçe</span>
+                            <i data-lucide="dollar-sign" class="kpi-icon" style="background: var(--success-light); color: var(--success);"></i>
+                        </div>
+                        <div class="kpi-value" id="kpi-budget">620.000 ₺</div>
+                        <div class="progress-bg">
+                            <div class="progress-fill" id="kpi-budget-bar" style="background: var(--success); width: 27%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel kpi-card">
+                        <div class="kpi-header">
+                            <span>Aktif Görevler</span>
+                            <i data-lucide="check-circle" class="kpi-icon" style="background: var(--warning-light); color: var(--warning);"></i>
+                        </div>
+                        <div class="kpi-value" id="kpi-tasks">12</div>
+                        <p style="font-size: 0.75rem; color: var(--text-muted);">4 Görev gecikmede</p>
+                    </div>
+
+                    <div class="glass-panel kpi-card">
+                        <div class="kpi-header">
+                            <span>Yaklaşan Milestone</span>
+                            <i data-lucide="flag" class="kpi-icon" style="background: var(--accent-light); color: var(--accent);"></i>
+                        </div>
+                        <div class="kpi-value" style="font-size: 1.25rem; margin-top: 0.5rem;" id="kpi-milestone">Prototip V1</div>
+                        <p style="font-size: 0.75rem; color: var(--text-muted);" id="kpi-milestone-date">28 Şubat 2026</p>
+                    </div>
+                </div>
+
+                <div class="dashboard-layout">
+                    <div class="glass-panel widget">
+                        <h3 class="widget-title"><i data-lucide="list"></i> Son Görevler</h3>
+                        <div class="table-container">
+                            <table id="dashboard-recent-tasks">
+                                <tbody>
+                                    <!-- Rendered via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="glass-panel widget">
+                        <h3 class="widget-title"><i data-lucide="users"></i> Ekip Durumu</h3>
+                        <div id="dashboard-team-list" class="flex-col gap-4">
+                            <!-- Rendered via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gantt Chart Page -->
+            <div id="page-gantt" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Gantt Şeması</h1>
+                        <p>Proje takvimi ve bağımlılıklar.</p>
+                    </div>
+                </div>
+                <div class="glass-panel" style="padding: 1rem; overflow-x: auto;">
+                    <div class="gantt-container" id="gantt-chart-container">
+                        <!-- Rendered via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kanban Board Page -->
+            <div id="page-kanban" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Kanban Board</h1>
+                        <p>Görevlerin durumlarına göre iş akışı.</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="openTaskModal()"><i data-lucide="plus"></i> Yeni Görev</button>
+                </div>
+                <div class="kanban-board">
+                    <div class="kanban-column" data-status="todo">
+                        <div class="kanban-header">
+                            <span class="badge todo">Yapılacak</span>
+                            <span class="count" id="count-todo">0</span>
+                        </div>
+                        <div class="kanban-cards" id="kanban-todo"></div>
+                    </div>
+                    <div class="kanban-column" data-status="in-progress">
+                        <div class="kanban-header">
+                            <span class="badge in-progress">Devam Eden</span>
+                            <span class="count" id="count-in-progress">0</span>
+                        </div>
+                        <div class="kanban-cards" id="kanban-in-progress"></div>
+                    </div>
+                    <div class="kanban-column" data-status="review">
+                        <div class="kanban-header">
+                            <span class="badge review">İncelemede</span>
+                            <span class="count" id="count-review">0</span>
+                        </div>
+                        <div class="kanban-cards" id="kanban-review"></div>
+                    </div>
+                    <div class="kanban-column" data-status="done">
+                        <div class="kanban-header">
+                            <span class="badge done">Tamamlanan</span>
+                            <span class="count" id="count-done">0</span>
+                        </div>
+                        <div class="kanban-cards" id="kanban-done"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tasks Page -->
+            <div id="page-tasks" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Görev Listesi</h1>
+                        <p>Tüm proje görevlerinin detaylı listesi.</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="openTaskModal()"><i data-lucide="plus"></i> Yeni Görev</button>
+                </div>
+                <div class="glass-panel widget">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Görev</th>
+                                    <th>Durum</th>
+                                    <th>Öncelik</th>
+                                    <th>Atanan</th>
+                                    <th>Başlangıç</th>
+                                    <th>Bitiş</th>
+                                    <th>İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody id="task-list-body">
+                                <!-- Rendered via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Page -->
+            <div id="page-team" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Ekip Yönetimi</h1>
+                        <p>Proje ekibi üyeleri ve sorumlulukları.</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="openTeamModal()"><i data-lucide="user-plus"></i> Üye Ekle</button>
+                </div>
+                <div class="team-grid" id="team-grid">
+                    <!-- Rendered via JS -->
+                </div>
+            </div>
+
+            <!-- Budget Page -->
+            <div id="page-budget" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Bütçe Takibi</h1>
+                        <p>Planlanan ve gerçekleşen maliyetler.</p>
+                    </div>
+                </div>
+                <div class="budget-layout">
+                    <div class="glass-panel widget flex-col justify-center items-center">
+                        <!-- SVG Circular Chart Placeholder -->
+                        <div style="position: relative; width: 250px; height: 250px;">
+                            <svg viewBox="0 0 36 36" style="width: 100%; height: 100%;">
+                                <!-- Rendered via JS -->
+                                <g id="budget-chart-rings"></g>
+                            </svg>
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                                <div style="font-size: 0.875rem; color: var(--text-muted);">Toplam Harcanan</div>
+                                <div style="font-size: 1.5rem; font-weight: 700;" id="budget-total-spent">0 ₺</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-panel widget">
+                        <h3 class="widget-title">Kategori Dağılımı</h3>
+                        <div id="budget-categories" class="flex-col">
+                            <!-- Rendered via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Risk Page -->
+            <div id="page-risks" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Risk Kaydı</h1>
+                        <p>Olası proje riskleri ve etki analizleri.</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="openRiskModal()"><i data-lucide="plus"></i> Risk Ekle</button>
+                </div>
+                <div class="glass-panel widget">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Risk Tanımı</th>
+                                    <th>Olasılık</th>
+                                    <th>Etki</th>
+                                    <th>Sorumlu</th>
+                                    <th>Durum</th>
+                                    <th>İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody id="risk-list-body">
+                                <!-- Rendered via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Milestones Roadmap Page -->
+            <div id="page-milestones" class="page">
+                <div class="page-header">
+                    <div>
+                        <h1 class="page-title">Geliştirme Yol Haritası</h1>
+                        <p>Proje aşamaları, beklenen teslimatlar (deliverables) ve ilerleme durumu.</p>
+                    </div>
+                </div>
+                <div id="milestone-timeline" style="max-width: 1000px; width: 100%; margin: 0 auto;">
+                    <!-- Rendered via JS -->
+                </div>
+            </div>
+
+            <!-- Product Showcase Page -->
+            <div id="page-showcase" class="page" style="max-width: 1200px; margin: 0 auto;">
+                
+                <div class="showcase-hero">
+                    <h2>KeyForge MK-1</h2>
+                    <p>Mühendislik harikası CNC alüminyum gövde, sıfır gecikmeli Tri-Mode bağlantı ve premium "Forge" anahtarları ile e-sporcular ve profesyonel yazılımcılar için yeniden tasarlandı.</p>
+                    <img src="./assets/keyboard.png" alt="KeyForge MK-1 Premium 75%" style="display: block; margin: 2rem auto 0; width: 100%; max-width: 800px; border-radius: 12px; filter: drop-shadow(0 20px 40px rgba(139, 92, 246, 0.2));">
+                </div>
+
+                <!-- Visual Gallery -->
+                <div class="showcase-gallery" style="margin-bottom: 4rem;">
+                    <h3 style="font-size: 2rem; margin-bottom: 1rem; text-align: center; color: var(--text-main);">Kusursuz Mühendislik</h3>
+                    <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Daha fazlasını görmek için sağa kaydırın (veya Touchpad ile sürükleyin)</p>
+                    
+                    <div class="horizontal-scroll-gallery" style="display: flex; overflow-x: auto; gap: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1rem; scroll-snap-type: x mandatory; scroll-behavior: smooth;">
+                        <div class="gallery-item glass-panel hover-glow" style="padding: 0; overflow: hidden; height: 450px; min-width: 75%; scroll-snap-align: center; flex-shrink: 0;">
+                            <img src="./assets/keyboard_isometric.png" alt="Isometric Keyboard" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);">
+                            <div class="gallery-overlay">
+                                <h4>Kompakt 75% Tasarım</h4>
+                                <p>Sadece gereken tuşlar. Masaüstünüzde maksimum mouse alanı.</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item glass-panel hover-glow" style="padding: 0; overflow: hidden; height: 450px; min-width: 75%; scroll-snap-align: center; flex-shrink: 0;">
+                            <img src="./assets/keyboard_case_detail.png" alt="CNC Aluminum Case" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);">
+                            <div class="gallery-overlay">
+                                <h4>Havacılık Sınıfı Alüminyum</h4>
+                                <p>6063 CNC işlenmiş alüminyum gövde ve pahlanmış parlak köşeler.</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item glass-panel hover-glow" style="padding: 0; overflow: hidden; height: 450px; min-width: 75%; scroll-snap-align: center; flex-shrink: 0;">
+                            <img src="./assets/keyboard_rgb_glow.png" alt="RGB Glow" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);">
+                            <div class="gallery-overlay">
+                                <h4>Gelişmiş RGB Aydınlatma</h4>
+                                <p>Her tuş altında parlayan kusursuz 16.8 milyon renk.</p>
+                            </div>
+                        </div>
+                        <div class="gallery-item glass-panel hover-glow" style="padding: 0; overflow: hidden; height: 450px; min-width: 75%; scroll-snap-align: center; flex-shrink: 0;">
+                            <img src="./assets/keyboard_pcb.png" alt="Hot-swap PCB" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);">
+                            <div class="gallery-overlay">
+                                <h4>Hot-Swappable PCB</h4>
+                                <p>Altın kaplama soketler ile lehim gerektirmeden saniyeler içinde switch değişimi.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i data-lucide="cpu"></i>
+                        </div>
+                        <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 600;">ARM Cortex-M4 İşlemci</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">Rekabetçi oyunlar için sıfır gecikme (zero-latency) hedeflenerek tasarlandı. Saniyede 1000Hz tarama hızı.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i data-lucide="wifi"></i>
+                        </div>
+                        <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 600;">Tri-Mode Bağlantı</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">2.4GHz ultra hızlı Wireless, Bluetooth 5.2 çoklu cihaz desteği ve sökülebilir Type-C kablolu mod.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i data-lucide="battery-charging"></i>
+                        </div>
+                        <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 600;">4000mAh Batarya</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">Devasa bataryası ile RGB kapalıyken 200 saate, açıkken ise 40 saate kadar kesintisiz kullanım ömrü.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i data-lucide="layers"></i>
+                        </div>
+                        <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 600;">Gasket Mount Yapı</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">Plaka ve PCB arasına yerleştirilen özel silikon contalar sayesinde esnek ve tok basım (thocky) hissiyatı.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i data-lucide="palette"></i>
+                        </div>
+                        <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 600;">Per-Key RGB Aydınlatma</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">Her tuş için ayrı ayarlanabilen, 16.8 milyon renk destekli, müzik ile senkronize olabilen güney-yönlü RGB ledler.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i data-lucide="keyboard"></i>
+                        </div>
+                        <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; font-weight: 600;">PBT Double-shot Keycaps</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.5;">Zamanla parlamayan, yağ tutmayan ve yazıları asla silinmeyen yüksek kaliteli kalın PBT tuş takımları.</p>
+                    </div>
+                </div>
+
+                <div class="showcase-split">
+                    <div class="glass-panel widget" style="padding: 0; overflow: hidden; height: 100%;">
+                        <img src="./assets/switches.png" alt="Custom Forge Switches" style="width: 100%; height: 350px; object-fit: cover; display: block; border-bottom: 1px solid var(--border);">
+                        <div style="padding: 2rem;">
+                            <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Özel Üretim "Forge" Switchler</h3>
+                            <p style="color: var(--text-muted); font-size: 1rem; line-height: 1.6; margin-bottom: 1.5rem;">Fabrika çıkışlı olarak en yüksek kalite Krytox 205g0 ile yağlanmış (factory-lubed), şeffaf polikarbon gövdeli ve pom stem'li özel üretim mekanik anahtarlarımız. Düşük ses profili ve olağanüstü pürüzsüz basım hedeflenmiştir.</p>
+                            
+                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                                <div style="background: rgba(255,255,255,0.05); padding: 0.75rem 1rem; border-radius: 8px;">
+                                    <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">Tipi</div>
+                                    <div style="font-weight: 600;">Linear</div>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.05); padding: 0.75rem 1rem; border-radius: 8px;">
+                                    <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">Hareket Kuvveti</div>
+                                    <div style="font-weight: 600;">45gf</div>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.05); padding: 0.75rem 1rem; border-radius: 8px;">
+                                    <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">Toplam Yol</div>
+                                    <div style="font-weight: 600;">3.5mm</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel widget" style="height: 100%; display: flex; flex-direction: column;">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i data-lucide="settings" style="color: var(--primary);"></i> Teknik Spesifikasyonlar
+                        </h3>
+                        <table class="tech-specs-table">
+                            <tbody>
+                                <tr>
+                                    <td>Form Faktörü</td>
+                                    <td>75% (82 Tuş + Knob)</td>
+                                </tr>
+                                <tr>
+                                    <td>Gövde Materyali</td>
+                                    <td>CNC İşlenmiş 6063 Alüminyum</td>
+                                </tr>
+                                <tr>
+                                    <td>Montaj Stili</td>
+                                    <td>Gasket Mount (Poron + Silikon)</td>
+                                </tr>
+                                <tr>
+                                    <td>PCB</td>
+                                    <td>Hot-swappable, 5-pin destekli</td>
+                                </tr>
+                                <tr>
+                                    <td>Polling Rate</td>
+                                    <td>1000Hz (Kablolu & 2.4GHz)</td>
+                                </tr>
+                                <tr>
+                                    <td>Batarya</td>
+                                    <td>4000mAh Lityum İyon</td>
+                                </tr>
+                                <tr>
+                                    <td>Aydınlatma</td>
+                                    <td>Güney yönlü (South-facing) RGB</td>
+                                </tr>
+                                <tr>
+                                    <td>Ağırlık</td>
+                                    <td>Yaklaşık 1.6 kg</td>
+                                </tr>
+                                <tr>
+                                    <td>Yazılım</td>
+                                    <td>QMK / VIA Destekli Özel Arayüz</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Task Modal -->
+    <div class="modal-overlay" id="task-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Yeni Görev Ekle</h3>
+                <button class="modal-close" onclick="closeTaskModal()"><i data-lucide="x"></i></button>
+            </div>
+            <form id="task-form" onsubmit="submitTask(event)">
+                <div class="form-group">
+                    <label>Görev Adı</label>
+                    <input type="text" id="task-title" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Durum</label>
+                    <select id="task-status" class="form-control">
+                        <option value="todo">Yapılacak</option>
+                        <option value="in-progress">Devam Eden</option>
+                        <option value="review">İncelemede</option>
+                        <option value="done">Tamamlanan</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Atanan</label>
+                    <select id="task-assignee" class="form-control">
+                        <!-- Populated via JS -->
+                    </select>
+                </div>
+                <div class="flex justify-between gap-4">
+                    <button type="button" class="btn" style="flex: 1; justify-content: center;" onclick="closeTaskModal()">İptal</button>
+                    <button type="submit" class="btn btn-primary" style="flex: 1; justify-content: center;">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Risk Modal -->
+    <div class="modal-overlay" id="risk-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Yeni Risk Ekle</h3>
+                <button class="modal-close" onclick="closeRiskModal()"><i data-lucide="x"></i></button>
+            </div>
+            <form id="risk-form" onsubmit="submitRisk(event)">
+                <div class="form-group">
+                    <label>Risk Tanımı</label>
+                    <input type="text" id="risk-title" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Olasılık</label>
+                    <select id="risk-probability" class="form-control">
+                        <option value="low">Düşük</option>
+                        <option value="medium">Orta</option>
+                        <option value="high">Yüksek</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Etki</label>
+                    <select id="risk-impact" class="form-control">
+                        <option value="low">Düşük</option>
+                        <option value="medium">Orta</option>
+                        <option value="high">Yüksek</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Sorumlu</label>
+                    <select id="risk-owner" class="form-control">
+                        <!-- Populated via JS -->
+                    </select>
+                </div>
+                <div class="flex justify-between gap-4">
+                    <button type="button" class="btn" style="flex: 1; justify-content: center;" onclick="closeRiskModal()">İptal</button>
+                    <button type="submit" class="btn btn-primary" style="flex: 1; justify-content: center;">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Team Modal -->
+    <div class="modal-overlay" id="team-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Yeni Üye Ekle</h3>
+                <button class="modal-close" onclick="closeTeamModal()"><i data-lucide="x"></i></button>
+            </div>
+            <form id="team-form" onsubmit="submitTeam(event)">
+                <div class="form-group">
+                    <label>İsim Soyisim</label>
+                    <input type="text" id="team-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Rol</label>
+                    <input type="text" id="team-role" class="form-control" required placeholder="Örn: Geliştirici, Tasarımcı">
+                </div>
+                <div class="flex justify-between gap-4">
+                    <button type="button" class="btn" style="flex: 1; justify-content: center;" onclick="closeTeamModal()">İptal</button>
+                    <button type="submit" class="btn btn-primary" style="flex: 1; justify-content: center;">Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Application Scripts -->
+    <script src="js/app.js?v=10"></script>
+</body>
+</html>
